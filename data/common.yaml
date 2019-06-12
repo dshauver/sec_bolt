@@ -3,6 +3,4 @@
 # Hiera
 hiera::cmdpath:
   - /opt/puppet/bin
-  - /usr/bin
-  - /usr/local/bin
   - /opt/puppetlabs/puppet/lib/ruby/vendor_gems/bin
