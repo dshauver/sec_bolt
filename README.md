@@ -1,35 +1,27 @@
 
-# sec_bolt_setup
-
-Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://puppet.com/pdk/latest/pdk_generating_modules.html .
-
-The README template below provides a starting point with details about what information to include in your README.
-
 #### Table of Contents
 
 1. [Description](#description)
-2. [Setup - The basics of getting started with sec_bolt_setup](#setup)
-    * [What sec_bolt_setup affects](#what-sec_bolt_setup-affects)
+2. [Setup - The basics of getting started with sec_bolt](#setup)
+    * [What sec_bolt affects](#what-sec_bolt-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with sec_bolt_setup](#beginning-with-sec_bolt_setup)
+    * [Beginning with sec_bolt](#beginning-with-sec_bolt)
 3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
 
 ## Description
 
-This modules is designed to set up a Puppet SE demo environment for the compliance/security bolt workshop as delivered to Compunet on 5/31/2019.  A presentation exists in Google Drive that includes talking points and setup for the environment. 
+This modules is designed to set up a Puppet SE demo environment for the compliance/security bolt workshop as delivered in Portland on 5/31/2019.  A presentation exists in Google Drive that includes talking points and setup for the environment. 
 
 It also contains the tasks, scripts, and puppet files used for "audit remediation" as part of the workshop.
 
 ## Setup
 
-### What sec_bolt_setup affects **OPTIONAL**
+### What sec_bolt affects **OPTIONAL**
 
-This modules does the following :
+This module provides plans, tasks, and manifests to :
 
-create_lnx_audit_findings, create_win_audit_findings plans :
-  1. Adds 3 users to all linux and windows "client" machines (does not touch the puppet master and gitlab servers), by applying the lnx_add_user.pp and win_add_user.pp puppet files.
+Setup :
+  1. Add 3 users to all linux and windows "client" machines (does not touch the puppet master and gitlab servers), by applying the lnx_add_user.pp and win_add_user.pp puppet files.
     * capncrunch
     * dproberts
     * bob
@@ -39,24 +31,47 @@ create_lnx_audit_findings, create_win_audit_findings plans :
   3. Installs/enables vsftpd on linux
   3. Installs the telnet client on linux & windows
 
-manifests/win_add_user.pp
-  Creates above listed user accounts on windowss
+Manifests:
+  win_add_user.pp
+    Creates above listed user accounts on windows.
 
-manifests/lnx_add_user.pp
-  Creates above listed user accounts on linux.
+  lnx_add_user.pp
+    Creates above listed user accounts on linux.
 
-win_usermod task
-  1. deletes the capncrunch user account
-  2. disables the dproberts user account
+  del_user.pp
+    Deletes the "capncrunch" account on both OSes.
 
-manifests/lnx_usermod.pp
-  1. Removes the capncrunch account
-  2. Removes "bob" from the adm & wheel groups
-  3. sets the login shell for dproberts user to /bin/false (disables login)
+  lnx_usermod.pp
+    1. Removes the capncrunch account
+    2. Removes "bob" from the adm & wheel groups
+    3. sets the login shell for dproberts user to /bin/false (disables login)
 
-manifests/lnx_userdel.pp
-  Removes the above listed accounts - used for testing purposes
+Tasks: 
+  win_ftp_install
+   Installs the windows Web-Ftp-Server feature.  The native bolt package task seems to depend on Chocolatey, which doesn't appear to like features (or I can't figure it out), so using this to install, enable, and start the windows feature.
 
+  win_telnet_install
+    Installs the windows telnet-client feature.  See above for Chocolately issues.
+
+  win_usermod
+    disables the dproberts user account
+
+Plans:
+  win_setup
+    Sets everything up on Windows nodes
+
+  lnx_setup
+    Sets everything up on Linux nodes
+
+  remediate_windows
+   1. Runs the "disable_win_user" task
+   2. Runs the "remove_win_admin" task
+   3. Runs a command to remove the "Telnet-Client" windows feature
+
+  remediate_linux
+   1. Runs the "disable_nix_user" task
+   2. Runs the "remove_admin_nix" task
+   3. Runs a command to remove the telnet package
 
 ### Setup Requirements **OPTIONAL**
 
@@ -70,44 +85,18 @@ You should have a SE demo environment deployed, and an inventory.yaml file updat
 
 Simple execute the plan on all client/student systems, similar to below :
 
-  > bolt plan run "create_lnx_audit_findings" -n lnxstudents 
-  > bolt plan run "create_win_audit_findings" -n winstudents 
+  > bolt plan run sec_bolt::lnx_setup -n lnxstudents 
+  > bolt plan run sec_bolt::win_setup -n winstudents 
 
-## Reference
+During the workshop, the students do the following :
+  > bolt command run “puppet resource user” -n winX,nixX
+  > bolt apply modules/sec_bolt/manifests/deluser.pp -n winX,nixX
 
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
+  > bolt command run "Stop-Service -name FTPSVC" -n winX
+  > bolt command run “Set-Service FTPSVC -StartupType Disable” -n winX 
+  > bolt command run “sudo systemctl stop vsftpd” -n nixX
+  > bolt command run “sudo systemctl disable vsftpd” -n nixX
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
+  > bolt plan run sec_bolt::remediate_windows -n winX
+  > bolt plan run sec_bolt::remediate_linux -n nixX
 
-For each element (class, defined type, function, and so on), list:
-
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
-
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
-
-## Limitations
-
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
-
-## Development
-
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.

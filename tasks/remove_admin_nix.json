@@ -1,0 +1,4 @@
+{
+    "description": "removes user bob from all centos groups as per audit findings 5/31/2019",
+    "input_method": "bash"
+}

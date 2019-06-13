@@ -1,0 +1,4 @@
+{
+    "description": "disables user dproberts on centos as per audit findings 5/31/2019",
+    "input_method": "bash"
+}
