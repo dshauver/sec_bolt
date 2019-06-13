@@ -18,35 +18,60 @@ The README template below provides a starting point with details about what info
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your module does and what kind of problems users can solve with it.
+This modules is designed to set up a Puppet SE demo environment for the compliance/security bolt workshop as delivered to Compunet on 5/31/2019.  A presentation exists in Google Drive that includes talking points and setup for the environment. 
 
-This should be a fairly short description helps the user decide if your module is what they want.
+It also contains the tasks, scripts, and puppet files used for "audit remediation" as part of the workshop.
 
 ## Setup
 
 ### What sec_bolt_setup affects **OPTIONAL**
 
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
+This modules does the following :
 
-If there's more that they should know about, though, this is the place to mention:
+create_lnx_audit_findings, create_win_audit_findings plans :
+  1. Adds 3 users to all linux and windows "client" machines (does not touch the puppet master and gitlab servers), by applying the lnx_add_user.pp and win_add_user.pp puppet files.
+    * capncrunch
+    * dproberts
+    * bob
+    All 3 users are local Administrators on Windows, and part of the admin/wheel group on linux.
+    Home directories and passwords are created
+  2. Installs/enables the FTP service on Windows
+  3. Installs/enables vsftpd on linux
+  3. Installs the telnet client on linux & windows
 
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+files/win_add_user.pp
+  Creates above listed user accounts on windowss
+
+files/lnx_add_user.pp
+  Creates above listed user accounts on linux.
+
+win_usermod task
+  1. deletes the capncrunch user account
+  2. disables the dproberts user account
+
+files/lnx_usermod.pp
+  1. Removes the capncrunch account
+  2. Removes "bob" from the adm & wheel groups
+  3. sets the login shell for dproberts user to /bin/false (disables login)
+
+files/lnx_userdel.pp
+  Removes the above listed accounts - used for testing purposes
+
 
 ### Setup Requirements **OPTIONAL**
 
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
+Have SE Demo environment created with Puppet Agents installed
 
 ### Beginning with sec_bolt_setup
 
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+You should have a SE demo environment deployed, and an inventory.yaml file updated to properly access all windows and linux client/student machines.  The instructions assume that you have added Windows Admin passwords to your inventory file (bad idea for production/customers, really convenient for demos), and have host keys set up so you can log in without entering a password.
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
+Simple execute the plan on all client/student systems, similar to below :
+
+  > bolt plan run "create_lnx_audit_findings" -n lnxstudents 
+  > bolt plan run "create_win_audit_findings" -n winstudents 
 
 ## Reference
 
