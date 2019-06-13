@@ -1,0 +1,3 @@
+user { 'capncrunch':
+  ensure           => 'absent',
+}

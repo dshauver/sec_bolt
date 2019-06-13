@@ -1,7 +1,7 @@
 {
   "puppet_task_version": 1,
   "supports_noop": false,
-  "description": "This task modifies the dproberts user to remove disable the account on windows, and removes the capncrunch account",
+  "description": "This task modifies the dproberts user to disable the account on windows",
   "parameters": {
   }
 }

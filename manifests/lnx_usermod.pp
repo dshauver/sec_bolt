@@ -1,6 +1,3 @@
-user { 'capncrunch':
-  ensure           => 'absent',
-}
 user { 'bob':
   groups           => [],
 }
