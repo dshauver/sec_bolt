@@ -1,0 +1,7 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "This task installs the Windows FTP Service feature, sets it to start automatically at boot, and explicitly starts the service.",
+  "parameters": {
+  }
+}

@@ -39,22 +39,22 @@ create_lnx_audit_findings, create_win_audit_findings plans :
   3. Installs/enables vsftpd on linux
   3. Installs the telnet client on linux & windows
 
-files/win_add_user.pp
+manifests/win_add_user.pp
   Creates above listed user accounts on windowss
 
-files/lnx_add_user.pp
+manifests/lnx_add_user.pp
   Creates above listed user accounts on linux.
 
 win_usermod task
   1. deletes the capncrunch user account
   2. disables the dproberts user account
 
-files/lnx_usermod.pp
+manifests/lnx_usermod.pp
   1. Removes the capncrunch account
   2. Removes "bob" from the adm & wheel groups
   3. sets the login shell for dproberts user to /bin/false (disables login)
 
-files/lnx_userdel.pp
+manifests/lnx_userdel.pp
   Removes the above listed accounts - used for testing purposes
 
 
