@@ -100,3 +100,4 @@ During the workshop, the students do the following :
   PS> bolt plan run sec_bolt::remediate_windows -n winX
   PS> bolt plan run sec_bolt::remediate_linux -n nixX
 
+##
