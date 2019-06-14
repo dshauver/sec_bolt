@@ -1,5 +1,5 @@
-plan sec_bolt::win_setup(
-  TargetSpec $nodes
+plan sec_bolt::win_setup (
+  TargetSpec $nodes,
 ) {
   $nodes.apply_prep
   apply($nodes) {
@@ -26,8 +26,8 @@ plan sec_bolt::win_setup(
     }
   }
 
-  run_task('sec_bolt::win_ftp_install', $nodes, "Install FTP Feature")
-  run_task('service', $nodes, "Enable FTP service", {'action' => 'enable', 'name' => 'FTPSVC'})
-  run_task('service', $nodes, "Start FTP service", {'action' => 'start', 'name' => 'FTPSVC'})
-  run_task('sec_bolt::win_telnet_install', $nodes, "Install telnet client" )
+  run_task('sec_bolt::win_ftp_install', $nodes, 'Install FTP Feature')
+  run_task('service', $nodes, 'Enable FTP service', {'action' => 'enable', 'name' => 'FTPSVC'})
+  run_task('service', $nodes, 'Start FTP service', {'action' => 'start', 'name' => 'FTPSVC'})
+  run_task('sec_bolt::win_telnet_install', $nodes, 'Install telnet client' )
 }
