@@ -1,4 +1,4 @@
 {
-    "description": "removes user bob from local Administrator group as per audit findings 5/31/2019",
+    "description": "Removes user bob from local Administrator group as per audit findings 5/31/2019",
     "input_method": "powershell"
 }

@@ -1,5 +1,5 @@
 plan sec_bolt::lnx_setup (
-  TargetSpec $nodes,
+  TargetSpec $nodes
 ) {
   $nodes.apply_prep
   apply($nodes) {
@@ -33,7 +33,7 @@ plan sec_bolt::lnx_setup (
   }
 
   run_task('package', $nodes, 'Install vsftpd package', {'action' => 'install', 'name' => 'vsftpd'})
-  run_task('service', $nodes, 'enable vsftpd service', {'action' => 'enable', 'name' => 'vsftpd'})
-  run_task('service', $nodes, 'start vsftpd service', {'action' => 'start', 'name' => 'vsftpd'})
-  run_task('package', $nodes, 'install telnet package', {'action' => 'install', 'name' => 'telnet'})
+  run_task('service', $nodes, 'Enable vsftpd service', {'action' => 'enable', 'name' => 'vsftpd'})
+  run_task('service', $nodes, 'Start vsftpd service', {'action' => 'start', 'name' => 'vsftpd'})
+  run_task('package', $nodes, 'Install telnet package', {'action' => 'install', 'name' => 'telnet'})
 }

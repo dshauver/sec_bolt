@@ -1,4 +1,4 @@
 {
-    "description": "disables user dproberts on windows as per audit findings 5/31/2019",
-    "input_method": "bash"
+    "description": "Disables user dproberts on windows as per audit findings 5/31/2019",
+    "input_method": "powershell"
 }
