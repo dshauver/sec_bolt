@@ -1,6 +1,4 @@
-plan sec_bolt::win_setup (
-  TargetSpec $nodes
-) {
+plan sec_bolt::win_setup ( TargetSpec $nodes) {
   $nodes.apply_prep
   apply($nodes) {
     user { 'capncrunch':
