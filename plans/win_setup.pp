@@ -1,5 +1,5 @@
 plan sec_bolt::win_setup (
-  TargetSpec $nodes,
+  TargetSpec $nodes
 ) {
   $nodes.apply_prep
   apply($nodes) {
@@ -19,7 +19,7 @@ plan sec_bolt::win_setup (
     }
     user { 'dproberts':
       ensure     => 'present',
-      comment    => 'Good night Node.  Good work. I will probably reboot you in the morning.',
+      comment    => 'Good night node.  Good work. I will probably reboot you in the morning.',
       groups     => ['BUILTIN\Administrators'],
       password   => Sensitive('w3$l3yt3h3rd'),
       managehome => true,
