@@ -9,6 +9,14 @@ plan sec_bolt::remediate_all(
   #run_task(centos_task, $centos_nodes)
   #run_task(ubuntu_task, $ubuntu_nodes)
 
+#All nodes
+  apply($nodes) {
+    user { 'capncrunch':
+          ensure     => 'absent',
+          managehome => true,
+    }
+  }
+
 #Windows
   #Disable DPRoberts User
   run_task('sec_bolt::disable_win_user', $win_nodes)
