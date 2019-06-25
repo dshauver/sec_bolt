@@ -1,4 +1,4 @@
-plan sec_bolt::remediate_all(
+plan sec_bolt::setup(
   TargetSpec $nodes,
 ) {
   # This collects facts on nodes and update the inventory
