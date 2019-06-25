@@ -20,7 +20,7 @@ plan sec_bolt::remediate_all(
 
 #Windows
   #Disable DPRoberts User
-  run_task('sec_bolt::disable_win_user', user => 'dproberts', $win_nodes)
+  run_task('sec_bolt::disable_win_user', 'user=dproberts', $win_nodes)
   #Remove Bob's admin rights
   #run_task('sec_bolt::remove_admin_win', user => 'bob', $win_nodes)
   run_task('sec_bolt::remove_admin_win', $win_nodes)
