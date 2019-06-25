@@ -2,13 +2,14 @@ plan sec_bolt::setup(
   TargetSpec $nodes,
 ) {
   # This collects facts on nodes and update the inventory
-  $nodes.apply_prep
   run_plan(facts, nodes => $nodes)
 
   $win_nodes = get_targets($nodes).filter |$n| { $n.facts['os']['name'] == 'Windows' }
   $centos_nodes = get_targets($nodes).filter |$n| { $n.facts['os']['name'] == 'CentOS' }
   #run_task(windows_task, $win_nodes)
   #run_task(centos_task, $centos_nodes)
+
+  $nodes.apply_prep
 
 #Windows
   apply($win_nodes) {
