@@ -1,11 +1,4 @@
 {
     "description": "Disables user dproberts on centos as per audit findings 5/31/2019",
-    "input_method": "stdin",
-
-    "parameters": {
-        "user": {
-            "description": "The name of the user account to lock",
-            "type": "String"
-        }
-    }
+    "input_method": "stdin"
 }
