@@ -1,0 +1,10 @@
+{
+    "description": "Disables user dproberts on windows as per audit findings 5/31/2019",
+    "input_method": "powershell",
+    "parameters": {
+        "user": {
+            "type": "String",
+            "description": "The Name of the user account to lock"
+        }
+    }
+}
