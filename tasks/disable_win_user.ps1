@@ -1,2 +1,2 @@
-param ($user)
-Disable-LocalUser $user
+#param ($user)
+Disable-LocalUser dproberts
