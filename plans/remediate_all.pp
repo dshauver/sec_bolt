@@ -4,12 +4,13 @@ plan sec_bolt::remediate_all(
   # This collects facts on nodes and update the inventory
   run_plan(facts, nodes => $nodes)
 
-  $centos_nodes = get_targets($nodes).filter |$n| { $n.facts['os']['name'] == 'CentOS' }
   $win_nodes = get_targets($nodes).filter |$n| { $n.facts['os']['name'] == 'Windows' }
+  $centos_nodes = get_targets($nodes).filter |$n| { $n.facts['os']['name'] == 'CentOS' }
+  #run_task(windows_task, $win_nodes)
   #run_task(centos_task, $centos_nodes)
-  #run_task(ubuntu_task, $ubuntu_nodes)
 
 #All nodes
+  #Delete user
   apply($nodes) {
     user { 'capncrunch':
           ensure     => 'absent',
@@ -26,6 +27,8 @@ plan sec_bolt::remediate_all(
   run_command('Remove-WindowsFeature -name Telnet-Client', $win_nodes)
   #Set firewall service to automatic startup
   run_command('Set-Service MpsSvc -StartupType Automatic', $win_nodes)
+  #Start firewall service
+  run_command('Start-Service -name MpsSvc', $win_nodes)
   #Stop FTP Service
   run_command('Stop-Service -name FTPSVC', $win_nodes)
   #Disable FTP Service
