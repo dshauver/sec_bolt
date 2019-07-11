@@ -85,18 +85,19 @@ You should have a SE demo environment deployed, and an inventory.yaml file updat
 
 Simple execute the plan on all client/student systems, similar to below :
 
-  > bolt plan run sec_bolt::lnx_setup -n lnxstudents 
-  > bolt plan run sec_bolt::win_setup -n winstudents 
+  PS> bolt plan run sec_bolt::lnx_setup -n lnxstudents 
+  PS> bolt plan run sec_bolt::win_setup -n winstudents 
 
 During the workshop, the students do the following :
-  > bolt command run “puppet resource user” -n winX,nixX
-  > bolt apply modules/sec_bolt/manifests/deluser.pp -n winX,nixX
+  PS> bolt command run “puppet resource user” -n winX,nixX
+  PS> bolt apply modules/sec_bolt/manifests/deluser.pp -n winX,nixX
 
-  > bolt command run "Stop-Service -name FTPSVC" -n winX
-  > bolt command run “Set-Service FTPSVC -StartupType Disable” -n winX 
-  > bolt command run “sudo systemctl stop vsftpd” -n nixX
-  > bolt command run “sudo systemctl disable vsftpd” -n nixX
+  PS> bolt command run "Stop-Service -name FTPSVC" -n winX
+  PS> bolt command run “Set-Service FTPSVC -StartupType Disable” -n winX 
+  PS> bolt command run “sudo systemctl stop vsftpd” -n nixX
+  PS> bolt command run “sudo systemctl disable vsftpd” -n nixX
 
-  > bolt plan run sec_bolt::remediate_windows -n winX
-  > bolt plan run sec_bolt::remediate_linux -n nixX
+  PS> bolt plan run sec_bolt::remediate_windows -n winX
+  PS> bolt plan run sec_bolt::remediate_linux -n nixX
 
+##
